@@ -10,6 +10,7 @@ import { Hero } from "@/components/landing/Hero";
 import { Navbar } from "@/components/landing/Navbar";
 import { Portfolio } from "@/components/landing/Portfolio";
 import { Process } from "@/components/landing/Process";
+import { siteConfig } from "@/config/site";
 
 const FAQS_SEO = [
   {
@@ -38,17 +39,23 @@ export const Route = createFileRoute("/")({
   component: Home,
   head: () => ({
     meta: [
-      { title: "NESKI Studio - strony i marketing dla lokalnych firm." },
-      {
-        name: "description",
-        content:
-          "Projektujemy nowoczesne strony internetowe i kampanie marketingowe, które pomagają lokalnym firmom zdobywać wartościowych klientów.",
-      },
-      { property: "og:url", content: "https://neski-digital-craft.lovable.app/" },
+      { title: siteConfig.title },
+      { name: "description", content: siteConfig.description },
+      { property: "og:title", content: siteConfig.title },
+      { property: "og:description", content: siteConfig.description },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: siteConfig.url },
+      { property: "og:locale", content: siteConfig.locale },
+      { property: "og:image", content: `${siteConfig.url}/og-image.png` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "NESKI Studio" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: siteConfig.title },
+      { name: "twitter:description", content: siteConfig.description },
+      { name: "twitter:image", content: `${siteConfig.url}/og-image.png` },
     ],
-    links: [
-      { rel: "canonical", href: "https://neski-digital-craft.lovable.app/" },
-    ],
+    links: [{ rel: "canonical", href: siteConfig.url }],
     scripts: [
       {
         type: "application/ld+json",

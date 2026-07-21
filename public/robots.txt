@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://neski-digital-craft.lovable.app/sitemap.xml
+Sitemap: https://neskistudio.pl/sitemap.xml
