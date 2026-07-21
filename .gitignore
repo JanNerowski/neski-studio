@@ -1,5 +1,7 @@
 # Dependencies
 node_modules/
+.output/
+.wrangler/
 
 # Production build
 dist/
