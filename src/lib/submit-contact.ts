@@ -4,8 +4,31 @@ import { siteConfig } from "@/config/site";
 import { contactSchema, type ContactFormValues, type SubmitContactResult } from "@/lib/contact";
 
 function env(name: string): string | undefined {
-  const value = process.env[name]?.trim();
-  return value ? value : undefined;
+  const fromProcess = process.env[name]?.trim();
+  if (fromProcess) return fromProcess;
+  return undefined;
+}
+
+async function readSecret(name: string): Promise<string | undefined> {
+  const fromProcess = env(name);
+  if (fromProcess) return fromProcess;
+
+  try {
+    const { env: cfEnv } = await import("cloudflare:workers");
+    const value = cfEnv?.[name];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  } catch {
+    // Local Vite / Node - Cloudflare bindings are unavailable.
+  }
+
+  return undefined;
+}
+
+function normalizeFormspreeId(raw: string): string {
+  return raw
+    .trim()
+    .replace(/^https?:\/\/formspree\.io\/f\//i, "")
+    .replace(/\/+$/, "");
 }
 
 function optionalLine(label: string, value: string | undefined) {
@@ -92,8 +115,9 @@ async function sendViaResend(apiKey: string, data: ContactFormValues) {
 }
 
 async function deliver(data: ContactFormValues) {
-  const formspreeId = env("FORMSPREE_FORM_ID");
-  const resendKey = env("RESEND_API_KEY");
+  const formspreeIdRaw = await readSecret("FORMSPREE_FORM_ID");
+  const formspreeId = formspreeIdRaw ? normalizeFormspreeId(formspreeIdRaw) : undefined;
+  const resendKey = await readSecret("RESEND_API_KEY");
 
   if (formspreeId) {
     await sendViaFormspree(formspreeId, data);
@@ -105,7 +129,7 @@ async function deliver(data: ContactFormValues) {
     return;
   }
 
-  if (process.env.NODE_ENV === "production") {
+  if (import.meta.env.PROD) {
     throw new Error("not_configured");
   }
 
