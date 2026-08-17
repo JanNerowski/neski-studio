@@ -35,8 +35,7 @@ function PrivacyPolicyPage() {
     >
       <LegalSection title="1. Administrator danych">
         <p>
-          Administratorem danych osobowych jest {siteConfig.legal.owner}, prowadzący działalność pod
-          marką {siteConfig.name} („Administrator”).
+          Administratorem danych osobowych jest {siteConfig.name} („Administrator”).
         </p>
         <p>
           Kontakt w sprawach ochrony danych:{" "}

@@ -12,7 +12,6 @@ export const siteConfig = {
     phone: "",
   },
   legal: {
-    owner: "Jan Nerowski",
     lastUpdated: "17 sierpnia 2026",
   },
   ogImage: {
