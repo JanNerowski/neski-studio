@@ -26,7 +26,7 @@ export function Hero() {
             Projektujemy cyfrową obecność lokalnych firm
           </div>
 
-          <h1 className="mt-8 font-display text-[54px] leading-[0.98] tracking-[-0.02em] sm:text-[72px] md:text-[88px] lg:text-[96px]">
+          <h1 className="mt-8 font-display text-[clamp(2.75rem,9vw,6rem)] leading-[0.98] tracking-[-0.02em]">
             <span className="text-gradient">Twoja strona</span>
             <br />
             <span className="text-gradient">powinna zdobywać</span>

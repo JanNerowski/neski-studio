@@ -29,6 +29,7 @@ export function Navbar() {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("");
+
   useEffect(() => {
     let lastY = window.scrollY;
     let ticking = false;
@@ -60,9 +61,9 @@ export function Navbar() {
   }, [open]);
 
   useEffect(() => {
-    const sections = NAV_LINKS
-      .map((l) => document.querySelector(l.href) as HTMLElement | null)
-      .filter((el): el is HTMLElement => !!el);
+    const sections = NAV_LINKS.map((l) => document.querySelector(l.href) as HTMLElement | null).filter(
+      (el): el is HTMLElement => !!el,
+    );
     if (!sections.length) return;
     const io = new IntersectionObserver(
       (entries) => {
@@ -77,6 +78,12 @@ export function Navbar() {
     return () => io.disconnect();
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
     <header
@@ -84,11 +91,11 @@ export function Navbar() {
         hidden ? "-translate-y-[140%] opacity-0" : "translate-y-0 opacity-100"
       }`}
     >
-
       <nav
+        aria-label="Główna nawigacja"
         className={`glass grain flex w-full max-w-6xl items-center justify-between rounded-2xl pl-4 pr-3 py-3 md:pl-6 md:pr-4 md:py-4 transition-all duration-500 ${
           scrolled
-            ? "shadow-[0_30px_80px_-20px_oklch(0.5_0.25_285_/_0.45)] border-white/15"
+            ? "border-white/15 bg-[oklch(0.13_0.02_275/_0.85)] shadow-[0_30px_80px_-20px_oklch(0.5_0.25_285_/_0.45)] backdrop-blur-xl"
             : ""
         }`}
       >
@@ -103,6 +110,7 @@ export function Navbar() {
             </span>
           </div>
         </a>
+
         <ul className="hidden items-center gap-1 md:flex">
           {NAV_LINKS.map((l) => {
             const isActive = active === l.href;
@@ -110,10 +118,8 @@ export function Navbar() {
               <li key={l.href}>
                 <a
                   href={l.href}
-                  className={`group relative rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-300 ease-out ${
-                    isActive
-                      ? "text-white"
-                      : "text-muted-foreground hover:text-white"
+                  className={`group relative rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
+                    isActive ? "text-white" : "text-muted-foreground hover:text-white"
                   }`}
                 >
                   <span
@@ -137,50 +143,64 @@ export function Navbar() {
           })}
         </ul>
 
-
         <div className="flex items-center gap-2">
           <a
             href="#kontakt"
-            className="hidden md:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[oklch(0.75_0.22_295)] to-[oklch(0.6_0.24_265)] px-5 py-2.5 text-sm font-semibold text-black shadow-[0_10px_30px_-10px_oklch(0.6_0.28_285/_0.7)] transition-transform hover:scale-[1.04]"
+            className="hidden md:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[oklch(0.75_0.22_295)] to-[oklch(0.6_0.24_265)] px-5 py-2.5 text-sm font-semibold text-black shadow-[0_10px_30px_-10px_oklch(0.6_0.28_285/_0.7)] transition-transform hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
           >
             Umów analizę
             <ArrowRight className="h-4 w-4" />
           </a>
           <button
+            type="button"
             onClick={() => setOpen((o) => !o)}
-            aria-label="Menu"
-            className="md:hidden flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5"
+            aria-label={open ? "Zamknij menu" : "Otwórz menu"}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            className="md:hidden flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </nav>
+
       {open && (
-        <div className="glass absolute top-24 left-4 right-4 rounded-3xl p-4 md:hidden">
-          <ul className="flex flex-col gap-1">
-            {NAV_LINKS.map((l) => (
-              <li key={l.href}>
+        <>
+          <button
+            type="button"
+            aria-label="Zamknij menu"
+            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+            onClick={() => setOpen(false)}
+          />
+          <div
+            id="mobile-nav"
+            className="glass absolute top-24 left-4 right-4 z-50 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-3xl p-4 md:hidden"
+          >
+            <ul className="flex flex-col gap-1">
+              {NAV_LINKS.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    className="block rounded-2xl px-4 py-3.5 text-base text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+              <li>
                 <a
-                  href={l.href}
+                  href="#kontakt"
                   onClick={() => setOpen(false)}
-                  className="block rounded-2xl px-4 py-3 text-sm text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                  className="mt-2 flex items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-r from-[oklch(0.75_0.22_295)] to-[oklch(0.6_0.24_265)] px-4 py-3.5 text-sm font-semibold text-black"
                 >
-                  {l.label}
+                  Umów analizę
+                  <ArrowRight className="h-4 w-4" />
                 </a>
               </li>
-            ))}
-            <li>
-              <a
-                href="#kontakt"
-                onClick={() => setOpen(false)}
-                className="mt-2 flex items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-r from-[oklch(0.75_0.22_295)] to-[oklch(0.6_0.24_265)] px-4 py-3 text-sm font-semibold text-black"
-              >
-                Umów analizę
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </li>
-          </ul>
-        </div>
+            </ul>
+          </div>
+        </>
       )}
     </header>
   );

@@ -7,3 +7,5 @@ NESKI Studio projektuje nowoczesne strony internetowe, landing pages oraz kampan
 ## Pages
 
 - [Strona główna](/): Oferta, proces, portfolio i FAQ NESKI Studio.
+- [Polityka prywatności](/polityka-prywatnosci): Zasady przetwarzania danych osobowych.
+- [Cookies](/cookies): Informacje o plikach cookies.

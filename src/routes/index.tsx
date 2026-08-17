@@ -2,38 +2,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 import { AmbientBackground } from "@/components/landing/AmbientBackground";
+import { Contact } from "@/components/landing/Contact";
 import { Ecosystem } from "@/components/landing/Ecosystem";
 import { FAQ } from "@/components/landing/FAQ";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
 import { Hero } from "@/components/landing/Hero";
+import { Marketing } from "@/components/landing/Marketing";
 import { Navbar } from "@/components/landing/Navbar";
 import { Portfolio } from "@/components/landing/Portfolio";
 import { Process } from "@/components/landing/Process";
-import { siteConfig } from "@/config/site";
-
-const FAQS_SEO = [
-  {
-    q: "Ile trwa realizacja strony?",
-    a: "Większość stron realizuję w ciągu 2-3 tygodni roboczych, w zależności od zakresu projektu.",
-  },
-  {
-    q: "Ile kosztuje strona w NESKI Studio?",
-    a: "Każdy projekt wyceniam indywidualnie. Po krótkiej rozmowie przygotowuję propozycję dopasowaną do potrzeb Twojej firmy.",
-  },
-  {
-    q: "Czy prowadzicie też reklamy?",
-    a: "Tak. Pomagam przygotować kampanie marketingowe oraz konfiguruję analitykę, aby strona realnie wspierała rozwój firmy.",
-  },
-  {
-    q: "Czy mogę rozbudować stronę później?",
-    a: "Oczywiście, strona jest przygotowana tak, aby można ją było łatwo rozwijać wraz z rozwojem Twojego biznesu.",
-  },
-  {
-    q: "Co jeśli mam już stronę?",
-    a: "Zrobimy audyt i pokażemy, co warto zmienić. Czasem wystarczy redesign kluczowych sekcji zamiast pełnej przebudowy.",
-  },
-];
+import { ValueProposition } from "@/components/landing/ValueProposition";
+import { WhyBusiness } from "@/components/landing/WhyBusiness";
+import { getAbsoluteUrl, siteConfig } from "@/config/site";
+import { FAQS } from "@/data/faq";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -46,14 +28,28 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: siteConfig.url },
       { property: "og:locale", content: siteConfig.locale },
-      { property: "og:image", content: `${siteConfig.url}/og-image.png` },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "NESKI Studio" },
+      {
+        property: "og:image",
+        content: getAbsoluteUrl(siteConfig.ogImage.path),
+      },
+      {
+        property: "og:image:width",
+        content: String(siteConfig.ogImage.width),
+      },
+      {
+        property: "og:image:height",
+        content: String(siteConfig.ogImage.height),
+      },
+      { property: "og:image:type", content: siteConfig.ogImage.type },
+      { property: "og:image:alt", content: siteConfig.ogImage.alt },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: siteConfig.title },
       { name: "twitter:description", content: siteConfig.description },
-      { name: "twitter:image", content: `${siteConfig.url}/og-image.png` },
+      {
+        name: "twitter:image",
+        content: getAbsoluteUrl(siteConfig.ogImage.path),
+      },
+      { name: "twitter:image:alt", content: siteConfig.ogImage.alt },
     ],
     links: [{ rel: "canonical", href: siteConfig.url }],
     scripts: [
@@ -62,7 +58,7 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          mainEntity: FAQS_SEO.map((f) => ({
+          mainEntity: FAQS.map((f) => ({
             "@type": "Question",
             name: f.q,
             acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -124,8 +120,6 @@ function Home() {
       }
       const el = document.querySelector(hash) as HTMLElement | null;
       if (!el) return;
-      // Prefer the section's first eyebrow/heading so we stop at the visible title,
-      // not at the section's outer padding.
       const anchorEl =
         (el.querySelector("[data-section-anchor]") as HTMLElement | null) ||
         (el.querySelector("h1, h2, h3") as HTMLElement | null) ||
@@ -136,17 +130,23 @@ function Home() {
 
     const onClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
-      const anchor = target?.closest('a[href^="#"]') as HTMLAnchorElement | null;
+      const anchor = target?.closest("a[href]") as HTMLAnchorElement | null;
       if (!anchor) return;
-      const hash = anchor.getAttribute("href");
-      if (!hash || !hash.startsWith("#")) return;
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+      const hashPos = href.indexOf("#");
+      if (hashPos === -1) return;
+      const path = href.slice(0, hashPos);
+      const hash = href.slice(hashPos);
+      const isHomeHash = href.startsWith("#") || path === "" || path === "/";
+      if (!isHomeHash || !hash) return;
+      if (window.location.pathname !== "/") return;
       e.preventDefault();
       if (animating) return;
       scrollToHash(hash);
       history.replaceState(null, "", hash === "#top" ? " " : hash);
     };
     const onUserScroll = () => {
-      // Only cancel on genuine user input (wheel/touch/keyboard), not programmatic scrolls
       cancel();
     };
     const onKey = (e: KeyboardEvent) => {
@@ -170,19 +170,27 @@ function Home() {
     };
   }, []);
 
-
-
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-black"
+      >
+        Przejdź do treści
+      </a>
       <AmbientBackground />
       <Navbar />
-      <main className="relative">
+      <main id="main-content" className="relative">
         <Hero />
+        <ValueProposition />
+        <WhyBusiness />
         <Ecosystem />
         <Portfolio />
         <Process />
+        <Marketing />
         <FAQ />
         <FinalCTA />
+        <Contact />
       </main>
       <Footer />
     </div>

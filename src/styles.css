@@ -186,3 +186,21 @@ section[id] {
 @utility animate-float-slower { animation: float-slower 11s ease-in-out infinite; }
 @utility animate-rise { animation: rise-in 1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 @utility animate-glow-pulse { animation: glow-pulse 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-glow-pulse,
+  .animate-float-slow,
+  .animate-float-slower,
+  .animate-rise {
+    animation: none !important;
+  }
+}
