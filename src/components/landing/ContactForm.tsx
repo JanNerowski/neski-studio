@@ -16,9 +16,14 @@ const labelClass = "mb-1.5 block text-xs font-medium uppercase tracking-wider te
 type ContactFormProps = {
   idPrefix?: string;
   className?: string;
+  onSubmittedChange?: (submitted: boolean) => void;
 };
 
-export function ContactForm({ idPrefix = "contact", className }: ContactFormProps) {
+export function ContactForm({
+  idPrefix = "contact",
+  className,
+  onSubmittedChange,
+}: ContactFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const phone = siteConfig.contact.phone.trim();
@@ -53,6 +58,7 @@ export function ContactForm({ idPrefix = "contact", className }: ContactFormProp
         return;
       }
       setSubmitted(true);
+      onSubmittedChange?.(true);
       reset();
     } catch {
       setSubmitError(
@@ -83,7 +89,10 @@ export function ContactForm({ idPrefix = "contact", className }: ContactFormProp
         </p>
         <button
           type="button"
-          onClick={() => setSubmitted(false)}
+          onClick={() => {
+            setSubmitted(false);
+            onSubmittedChange?.(false);
+          }}
           className="mt-8 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
         >
           Wyślij kolejne zapytanie
