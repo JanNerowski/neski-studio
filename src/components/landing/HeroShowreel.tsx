@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import logo from "@/assets/neski-mark.png";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -6,22 +6,73 @@ import { cn } from "@/lib/utils";
 
 const VIDEO_SRC = "/hero.mp4";
 const HAS_HERO_VIDEO = false;
-const WORD_MS = 2200;
+const TICKER_PX_PER_SEC = 88;
+const TICKER_REPEATS = 4;
 
 const WORDS = ["Strona", "Google", "Reklamy", "Opieka"] as const;
+const LOOP = Array.from({ length: TICKER_REPEATS }, () => WORDS).flat();
+
+function WordTicker({ reducedMotion }: { reducedMotion: boolean }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const firstCopyRef = useRef<HTMLDivElement>(null);
+  const copies = reducedMotion ? [WORDS] : [LOOP, LOOP];
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const first = firstCopyRef.current;
+    const track = trackRef.current;
+    if (!first || !track) return;
+
+    let lastWidth = 0;
+    const sync = () => {
+      const width = Math.round(first.scrollWidth);
+      if (width <= 0) return;
+      if (lastWidth > 0 && Math.abs(width - lastWidth) < 8) return;
+      lastWidth = width;
+      track.style.setProperty("--word-marquee-distance", `${width}px`);
+      track.style.setProperty("--word-marquee-duration", `${(width / TICKER_PX_PER_SEC).toFixed(2)}s`);
+    };
+
+    sync();
+    void document.fonts.ready.then(sync);
+    const observer = new ResizeObserver(sync);
+    observer.observe(first);
+    return () => observer.disconnect();
+  }, [reducedMotion]);
+
+  return (
+    <div
+      className="relative mt-8 w-[calc(100%+3rem)] -mx-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]"
+      aria-hidden
+    >
+      <div
+        ref={trackRef}
+        className={cn(
+          "flex w-max will-change-transform [contain:layout_style]",
+          !reducedMotion && "animate-word-marquee",
+          reducedMotion && "justify-center",
+        )}
+      >
+        {copies.map((words, copy) => (
+          <div key={copy} ref={copy === 0 ? firstCopyRef : undefined} className="flex">
+            {words.map((word, i) => (
+              <span
+                key={`${copy}-${i}-${word}`}
+                className="shrink-0 px-8 font-display text-xl font-medium text-[oklch(0.84_0.14_290)] md:px-10 md:text-2xl"
+              >
+                {word}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function HeroShowreel() {
   const reducedMotion = useReducedMotion();
-  const [word, setWord] = useState(0);
   const [useVideo, setUseVideo] = useState(HAS_HERO_VIDEO);
-
-  useEffect(() => {
-    if (reducedMotion || useVideo) return;
-    const id = window.setInterval(() => {
-      setWord((i) => (i + 1) % WORDS.length);
-    }, WORD_MS);
-    return () => window.clearInterval(id);
-  }, [reducedMotion, useVideo]);
 
   return (
     <div className="relative">
@@ -73,17 +124,12 @@ export function HeroShowreel() {
                 <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.32em] text-white/55">
                   Studio
                 </p>
-                <p
-                  key={WORDS[word]}
-                  className="mt-8 font-display text-xl font-medium text-gradient-brand md:text-2xl"
-                >
-                  {WORDS[word]}
-                </p>
+                <WordTicker reducedMotion={reducedMotion} />
               </div>
             </>
           )}
 
-          <div aria-hidden className="grain pointer-events-none absolute inset-0 z-10 opacity-40" />
+          <div aria-hidden className="grain pointer-events-none absolute inset-0 z-[1] opacity-40" />
           <div className="absolute inset-x-0 bottom-0 z-20 p-5 md:p-6">
             <p className="text-sm text-white/70">Strony, widoczność i reklamy dla firm.</p>
           </div>

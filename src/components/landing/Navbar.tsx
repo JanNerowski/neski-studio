@@ -42,7 +42,7 @@ export function PhoneLink({
     return (
       <a
         href={href}
-        className={`inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-2.5 py-2 text-sm font-semibold text-white ${className}`}
+        className={`inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-2 py-1.5 text-[13px] font-semibold text-white min-[400px]:px-2.5 min-[400px]:py-2 min-[400px]:text-sm ${className}`}
         aria-label={`Zadzwoń ${phone}`}
       >
         <Phone className="h-3.5 w-3.5 text-[oklch(0.82_0.16_290)]" strokeWidth={2} />
@@ -131,21 +131,21 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-4 z-50 flex justify-center px-4 transition-all duration-300 ease-out will-change-transform ${
+      className={`fixed inset-x-0 top-[max(1rem,env(safe-area-inset-top))] z-50 flex justify-center px-3 min-[400px]:px-4 transition-all duration-300 ease-out will-change-transform ${
         hidden ? "-translate-y-[140%] opacity-0" : "translate-y-0 opacity-100"
       }`}
     >
       <nav
         aria-label="Główna nawigacja"
-        className={`glass grain flex w-full max-w-6xl items-center justify-between rounded-2xl pl-4 pr-3 py-3 md:pl-6 md:pr-4 md:py-3.5 transition-all duration-500 ${
+        className={`glass grain flex w-full max-w-6xl min-w-0 items-center justify-between gap-2 rounded-2xl pl-3 pr-2 py-2.5 min-[400px]:pl-4 min-[400px]:pr-3 min-[400px]:py-3 md:pl-6 md:pr-4 md:py-3.5 transition-all duration-500 ${
           scrolled
             ? "border-white/15 bg-[oklch(0.13_0.02_275/_0.85)] shadow-[0_30px_80px_-20px_oklch(0.5_0.25_285_/_0.45)] backdrop-blur-xl"
             : ""
         }`}
       >
-        <a href="#top" className="group flex items-center gap-3">
+        <a href="#top" className="group flex min-w-0 items-center gap-2 min-[400px]:gap-3">
           <LogoMark />
-          <div className="flex flex-col leading-none">
+          <div className="hidden min-[380px]:flex flex-col leading-none">
             <span className="font-display text-xl md:text-2xl font-semibold tracking-tight text-gradient-brand">
               NESKI
             </span>
@@ -187,7 +187,7 @@ export function Navbar() {
           })}
         </ul>
 
-        <div className="flex items-center gap-3 md:gap-4">
+        <div className="flex shrink-0 items-center gap-1.5 min-[400px]:gap-3 md:gap-4">
           <PhoneLink className="hidden md:flex" />
           <PhoneLink compact className="md:hidden" />
           <button

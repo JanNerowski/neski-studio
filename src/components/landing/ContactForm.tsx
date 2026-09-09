@@ -9,7 +9,7 @@ import { submitContact } from "@/lib/submit-contact";
 import { cn } from "@/lib/utils";
 
 const inputClass =
-  "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-[oklch(0.7_0.22_290/_0.5)] focus:ring-2 focus:ring-[oklch(0.7_0.22_290/_0.2)]";
+  "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-[oklch(0.7_0.22_290/_0.5)] focus:ring-2 focus:ring-[oklch(0.7_0.22_290/_0.2)] md:text-sm";
 
 const labelClass = "mb-1.5 block text-xs font-medium uppercase tracking-wider text-muted-foreground";
 

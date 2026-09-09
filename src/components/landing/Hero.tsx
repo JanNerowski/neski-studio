@@ -1,7 +1,52 @@
+import { useEffect, useState } from "react";
 import { ArrowRight, Eye, Megaphone, Phone } from "lucide-react";
 
 import { HeroShowreel } from "@/components/landing/HeroShowreel";
 import { useQuote } from "@/components/landing/QuoteDialog";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
+const HEADLINE_STATIC = "Nowoczesne strony internetowe,";
+const HEADLINE_MID = "które pokażą";
+const HEADLINE_TYPED = "Twoją firmę";
+const HEADLINE_FULL = `${HEADLINE_STATIC} ${HEADLINE_MID} ${HEADLINE_TYPED}.`;
+
+function useHeadlineTypewriter(reducedMotion: boolean) {
+  const [chars, setChars] = useState(reducedMotion ? HEADLINE_TYPED.length : 0);
+  const [periodOn, setPeriodOn] = useState(reducedMotion);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setChars(HEADLINE_TYPED.length);
+      setPeriodOn(true);
+      return;
+    }
+
+    if (chars < HEADLINE_TYPED.length) {
+      const delay = chars === 0 ? 1000 : 95;
+      const id = window.setTimeout(() => setChars((c) => c + 1), delay);
+      return () => window.clearTimeout(id);
+    }
+
+    setPeriodOn(true);
+    let timeout = window.setTimeout(function blink() {
+      setPeriodOn(false);
+      timeout = window.setTimeout(() => {
+        setPeriodOn(true);
+        timeout = window.setTimeout(blink, 2000);
+      }, 520);
+    }, 2000);
+
+    return () => window.clearTimeout(timeout);
+  }, [chars, reducedMotion]);
+
+  const done = chars >= HEADLINE_TYPED.length;
+
+  return {
+    typed: HEADLINE_TYPED.slice(0, chars),
+    charsComplete: done,
+    showPeriod: done && periodOn,
+  };
+}
 
 const BENEFITS = [
   {
@@ -20,6 +65,8 @@ const BENEFITS = [
 
 export function Hero() {
   const { openQuote } = useQuote();
+  const reducedMotion = useReducedMotion();
+  const { typed, charsComplete, showPeriod } = useHeadlineTypewriter(reducedMotion);
 
   return (
     <section id="top" className="relative pt-32 pb-20 md:pt-40 md:pb-24">
@@ -34,9 +81,24 @@ export function Hero() {
               Strony internetowe dla firm
             </div>
 
-            <h1 className="mt-8 font-display text-[clamp(2.5rem,7vw,5rem)] font-semibold leading-[1.02] tracking-[-0.03em]">
-              <span className="text-gradient">Nowoczesne strony internetowe,</span>{" "}
-              <span className="text-gradient-brand">które pokażą Twoją firmę.</span>
+            <h1 className="relative z-10 mt-8 pb-8 font-display text-[clamp(2.5rem,7vw,5rem)] font-semibold leading-[1.02] tracking-[-0.03em]">
+              <span className="sr-only">{HEADLINE_FULL}</span>
+              <span aria-hidden="true">
+                <span className="text-gradient">{HEADLINE_STATIC}</span>{" "}
+                <span className="text-gradient-brand">{HEADLINE_MID}</span>
+                <span className="block min-h-[1.2em] text-gradient-brand">
+                  {typed}
+                  {charsComplete ? (
+                    <span
+                      className={`inline-block transition-opacity duration-500 ease-out ${
+                        showPeriod ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      .
+                    </span>
+                  ) : null}
+                </span>
+              </span>
             </h1>
 
             <p className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground md:text-[17px]">
@@ -58,18 +120,18 @@ export function Hero() {
               })}
             </ul>
 
-            <div className="mt-10 flex flex-wrap items-center gap-3">
+            <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <button
                 type="button"
                 onClick={openQuote}
-                className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition-transform hover:scale-[1.02]"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition-transform hover:scale-[1.02]"
               >
                 Wyceń projekt
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </button>
               <a
                 href="#portfolio"
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 px-6 py-3.5 text-sm text-foreground/90 transition-colors hover:bg-white/[0.06]"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 px-6 py-3.5 text-sm text-foreground/90 transition-colors hover:bg-white/[0.06]"
               >
                 Zobacz przykłady
               </a>

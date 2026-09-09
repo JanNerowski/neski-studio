@@ -1,5 +1,7 @@
 import { Reveal } from "@/components/landing/Reveal";
 import { SectionLabel } from "@/components/landing/SectionLabel";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { cn } from "@/lib/utils";
 
 const AUDIENCES = [
   {
@@ -17,8 +19,10 @@ const AUDIENCES = [
 ] as const;
 
 export function ForWhom() {
+  const reducedMotion = useReducedMotion();
+
   return (
-    <section id="dla-kogo" className="relative py-20 md:py-28">
+    <section id="dla-kogo" className="relative py-14 md:py-16">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <SectionLabel>Dla kogo</SectionLabel>
@@ -32,13 +36,31 @@ export function ForWhom() {
           </p>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-5 pb-6 md:mt-10 md:grid-cols-3 md:gap-5">
           {AUDIENCES.map((item, i) => (
-            <Reveal key={item.title} delay={i * 90}>
-              <article className="h-full rounded-3xl border border-white/5 bg-white/[0.02] p-6 transition-all duration-500 ease-out hover:-translate-y-1 hover:border-white/12 hover:bg-white/[0.04] hover:shadow-[0_24px_60px_-28px_oklch(0.55_0.28_295/_0.4)]">
-                <h3 className="font-display text-2xl font-semibold tracking-tight">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
-              </article>
+            <Reveal key={item.title} delay={i * 90} className="h-full">
+              <div className="relative h-full">
+                <div
+                  aria-hidden
+                  className={cn(
+                    "pointer-events-none absolute inset-x-4 -bottom-6 h-16 rounded-full bg-[radial-gradient(ellipse_at_center,oklch(0.72_0.26_290/_0.8),oklch(0.52_0.22_265/_0.28)_52%,transparent_72%)] blur-2xl",
+                    !reducedMotion && "animate-audience-glow",
+                  )}
+                  style={{ animationDelay: `${i * 0.85}s` }}
+                />
+                <article className="relative z-10 rounded-[28px] border border-white/10 bg-[oklch(0.14_0.03_275)] p-6 md:p-7">
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 rounded-[28px] bg-[radial-gradient(80%_60%_at_50%_120%,oklch(0.55_0.22_290/_0.18),transparent_62%)]"
+                  />
+                  <h3 className="relative font-display text-2xl font-semibold tracking-tight md:text-[1.7rem]">
+                    {item.title}
+                  </h3>
+                  <p className="relative mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {item.desc}
+                  </p>
+                </article>
+              </div>
             </Reveal>
           ))}
         </div>

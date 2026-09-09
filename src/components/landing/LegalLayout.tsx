@@ -24,7 +24,7 @@ export function LegalLayout({ title, description, updated, children }: LegalLayo
       </a>
       <AmbientBackground />
 
-      <header className="relative z-10 px-4 pt-6">
+      <header className="relative z-10 px-4 pt-[max(1.5rem,env(safe-area-inset-top))]">
         <nav
           aria-label="Nawigacja strony prawnej"
           className="glass mx-auto flex w-full max-w-6xl items-center justify-between rounded-2xl px-4 py-3 md:px-6 md:py-4"
