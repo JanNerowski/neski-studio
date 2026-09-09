@@ -34,8 +34,8 @@
   --color-ring-offset-background: var(--background);
   --color-violet: var(--violet);
   --color-indigo: var(--indigo);
-  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
-  --font-sans: "Geist", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", "Outfit", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -181,11 +181,70 @@ section[id] {
   0% { transform: rotate(0deg) translateX(var(--r)) rotate(0deg); }
   100% { transform: rotate(360deg) translateX(var(--r)) rotate(-360deg); }
 }
+@keyframes showreel-enter {
+  0% { opacity: 0; transform: translateY(22px) scale(0.97); filter: blur(10px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+@keyframes showreel-wipe {
+  0% { clip-path: inset(0 0 0 100%); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes showreel-kenburns {
+  0% { transform: scale(1) translate3d(0, 0, 0); }
+  100% { transform: scale(1.12) translate3d(-1.6%, -1.2%, 0); }
+}
+@keyframes showreel-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes watermark-drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(2%, -1.5%, 0); }
+}
+@keyframes film-pan {
+  0% { transform: scale(1.08) translate3d(0, 0, 0); }
+  100% { transform: scale(1.16) translate3d(-2.4%, -1.6%, 0); }
+}
+@keyframes ring-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes ring-spin-rev {
+  from { transform: translate(-50%, -50%) rotate(360deg); }
+  to { transform: translate(-50%, -50%) rotate(0deg); }
+}
 
 @utility animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
 @utility animate-float-slower { animation: float-slower 11s ease-in-out infinite; }
 @utility animate-rise { animation: rise-in 1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 @utility animate-glow-pulse { animation: glow-pulse 6s ease-in-out infinite; }
+@utility animate-showreel-enter {
+  animation: showreel-enter 1.15s cubic-bezier(0.2, 0.7, 0.2, 1) 0.18s both;
+}
+@utility animate-showreel-wipe {
+  animation: showreel-wipe 0.95s cubic-bezier(0.77, 0, 0.18, 1) both;
+}
+@utility animate-showreel-kenburns {
+  animation: showreel-kenburns 4.2s linear both;
+}
+@utility animate-showreel-progress {
+  animation: showreel-progress 4s linear both;
+  transform-origin: left center;
+}
+@utility animate-watermark-drift {
+  animation: watermark-drift 22s ease-in-out infinite;
+}
+@utility animate-film-pan {
+  animation: film-pan 14s linear alternate infinite;
+}
+@utility animate-ring-spin {
+  animation: ring-spin 28s linear infinite;
+  transform-origin: center;
+}
+@utility animate-ring-spin-rev {
+  animation: ring-spin-rev 18s linear infinite;
+  transform-origin: center;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -200,7 +259,15 @@ section[id] {
   .animate-glow-pulse,
   .animate-float-slow,
   .animate-float-slower,
-  .animate-rise {
+  .animate-rise,
+  .animate-showreel-enter,
+  .animate-showreel-wipe,
+  .animate-showreel-kenburns,
+  .animate-showreel-progress,
+  .animate-watermark-drift,
+  .animate-film-pan,
+  .animate-ring-spin,
+  .animate-ring-spin-rev {
     animation: none !important;
   }
 }

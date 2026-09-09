@@ -7,33 +7,23 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 const STEPS = [
   {
     n: "01",
-    title: "Bezpłatna analiza",
-    desc: "Rozmawiamy o firmie, celach i obecnej sytuacji. Bez zobowiązań.",
+    title: "Rozmowa",
+    desc: "Krótko o firmie i tym, po co ma być strona. Bez zobowiązań.",
   },
   {
     n: "02",
-    title: "Strategia",
-    desc: "Planujemy strukturę strony, komunikację i sposób pozyskiwania klientów.",
+    title: "Projekt",
+    desc: "Układ, teksty, wygląd. Widzisz propozycję, zanim cokolwiek wdrażamy.",
   },
   {
     n: "03",
-    title: "Projekt",
-    desc: "Tworzymy nowoczesny wygląd dopasowany do marki i oczekiwań klientów.",
+    title: "Wdrożenie",
+    desc: "Kod, domena, formularz. Strona działa na telefonie i komputerze.",
   },
   {
     n: "04",
-    title: "Development",
-    desc: "Kodujemy stronę z naciskiem na szybkość, responsywność i jakość.",
-  },
-  {
-    n: "05",
-    title: "Publikacja",
-    desc: "Wdrażamy stronę, konfigurujemy domenę, formularze i podstawową analitykę.",
-  },
-  {
-    n: "06",
-    title: "Optymalizacja",
-    desc: "Analizujemy wyniki i wprowadzamy poprawki wraz z rozwojem biznesu.",
+    title: "Start",
+    desc: "Publikacja. Potem poprawki, hosting i opieka - jeśli chcesz zostać.",
   },
 ] as const;
 
@@ -63,9 +53,9 @@ export function Process() {
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <SectionLabel>Proces</SectionLabel>
-          <h2 className="mt-4 max-w-3xl font-display text-4xl leading-[1.02] tracking-tight md:text-6xl">
-            <span className="text-gradient">Od pomysłu do gotowej strony.</span>{" "}
-            <span className="italic text-gradient-brand">Przejrzysty proces na każdym etapie.</span>
+          <h2 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
+            <span className="text-gradient">Cztery kroki.</span>{" "}
+            <span className="text-gradient-brand">Wiesz, co się dzieje.</span>
           </h2>
         </Reveal>
 
@@ -80,14 +70,14 @@ export function Process() {
             />
           </div>
 
-          <ol className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <ol className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s, i) => (
               <Reveal key={s.n} as="li" delay={i * 80}>
                 <article className="relative flex h-full flex-col rounded-3xl border border-white/5 bg-white/[0.02] p-6 transition-colors duration-300 hover:border-white/10 hover:bg-white/[0.03]">
-                  <span className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full glass font-display text-lg">
+                  <span className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full glass font-display text-lg font-semibold">
                     <span className="text-gradient-brand">{s.n}</span>
                   </span>
-                  <h3 className="mt-5 font-display text-2xl tracking-tight">{s.title}</h3>
+                  <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight">{s.title}</h3>
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
                     {s.desc}
                   </p>

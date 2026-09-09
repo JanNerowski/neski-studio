@@ -28,8 +28,10 @@ export function Reveal({
         reducedMotion
           ? className
           : cn(
-              "transition-[opacity,transform] duration-700 ease-out",
-              inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0",
+              "transition-[opacity,transform,filter] duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]",
+              inView
+                ? "translate-y-0 opacity-100 blur-0"
+                : "translate-y-5 opacity-0 blur-[6px]",
               className,
             ),
       )}

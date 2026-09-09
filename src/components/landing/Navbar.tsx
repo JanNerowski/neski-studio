@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, Menu, Phone, X } from "lucide-react";
+
+import { useQuote } from "@/components/landing/QuoteDialog";
+import { getTelHref, siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
 
 import logo from "@/assets/neski-mark.png";
 
 const NAV_LINKS = [
-  { href: "#ekosystem", label: "Ekosystem" },
-  { href: "#realizacje", label: "Realizacje" },
+  { href: "#oferta", label: "Oferta" },
+  { href: "#dla-kogo", label: "Dla kogo" },
+  { href: "#portfolio", label: "Portfolio" },
   { href: "#proces", label: "Proces" },
   { href: "#faq", label: "FAQ" },
-  { href: "#kontakt", label: "Kontakt" },
 ];
 
 export function LogoMark() {
@@ -24,7 +28,47 @@ export function LogoMark() {
   );
 }
 
+export function PhoneLink({
+  compact = false,
+  className = "",
+}: {
+  compact?: boolean;
+  className?: string;
+}) {
+  const phone = siteConfig.contact.phone;
+  const href = getTelHref(phone);
+
+  if (compact) {
+    return (
+      <a
+        href={href}
+        className={`inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-2.5 py-2 text-sm font-semibold text-white ${className}`}
+        aria-label={`Zadzwoń ${phone}`}
+      >
+        <Phone className="h-3.5 w-3.5 text-[oklch(0.82_0.16_290)]" strokeWidth={2} />
+        {phone}
+      </a>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      className={cn("flex flex-col items-end leading-none", className)}
+    >
+      <span className="flex items-center gap-1 text-[11px] text-white/70">
+        <Phone className="h-3 w-3 text-[oklch(0.82_0.16_290)]" strokeWidth={2.25} />
+        Szybki kontakt
+      </span>
+      <span className="mt-1 text-[17px] font-extrabold tracking-tight text-white md:text-[19px]">
+        {phone}
+      </span>
+    </a>
+  );
+}
+
 export function Navbar() {
+  const { openQuote } = useQuote();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
@@ -93,7 +137,7 @@ export function Navbar() {
     >
       <nav
         aria-label="Główna nawigacja"
-        className={`glass grain flex w-full max-w-6xl items-center justify-between rounded-2xl pl-4 pr-3 py-3 md:pl-6 md:pr-4 md:py-4 transition-all duration-500 ${
+        className={`glass grain flex w-full max-w-6xl items-center justify-between rounded-2xl pl-4 pr-3 py-3 md:pl-6 md:pr-4 md:py-3.5 transition-all duration-500 ${
           scrolled
             ? "border-white/15 bg-[oklch(0.13_0.02_275/_0.85)] shadow-[0_30px_80px_-20px_oklch(0.5_0.25_285_/_0.45)] backdrop-blur-xl"
             : ""
@@ -102,7 +146,7 @@ export function Navbar() {
         <a href="#top" className="group flex items-center gap-3">
           <LogoMark />
           <div className="flex flex-col leading-none">
-            <span className="font-display text-xl md:text-2xl tracking-tight text-gradient-brand">
+            <span className="font-display text-xl md:text-2xl font-semibold tracking-tight text-gradient-brand">
               NESKI
             </span>
             <span className="text-[10px] md:text-[11px] font-medium uppercase tracking-[0.28em] text-muted-foreground">
@@ -111,14 +155,14 @@ export function Navbar() {
           </div>
         </a>
 
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul className="hidden items-center gap-0.5 lg:flex">
           {NAV_LINKS.map((l) => {
             const isActive = active === l.href;
             return (
               <li key={l.href}>
                 <a
                   href={l.href}
-                  className={`group relative rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
+                  className={`group relative rounded-full px-3 py-2.5 text-sm font-medium transition-colors duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
                     isActive ? "text-white" : "text-muted-foreground hover:text-white"
                   }`}
                 >
@@ -143,21 +187,24 @@ export function Navbar() {
           })}
         </ul>
 
-        <div className="flex items-center gap-2">
-          <a
-            href="#kontakt"
+        <div className="flex items-center gap-3 md:gap-4">
+          <PhoneLink className="hidden md:flex" />
+          <PhoneLink compact className="md:hidden" />
+          <button
+            type="button"
+            onClick={openQuote}
             className="hidden md:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[oklch(0.75_0.22_295)] to-[oklch(0.6_0.24_265)] px-5 py-2.5 text-sm font-semibold text-black shadow-[0_10px_30px_-10px_oklch(0.6_0.28_285/_0.7)] transition-transform hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
           >
-            Umów analizę
+            Wyceń projekt
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </button>
           <button
             type="button"
             onClick={() => setOpen((o) => !o)}
             aria-label={open ? "Zamknij menu" : "Otwórz menu"}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            className="md:hidden flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            className="lg:hidden flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -169,12 +216,12 @@ export function Navbar() {
           <button
             type="button"
             aria-label="Zamknij menu"
-            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
             onClick={() => setOpen(false)}
           />
           <div
             id="mobile-nav"
-            className="glass absolute top-24 left-4 right-4 z-50 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-3xl p-4 md:hidden"
+            className="glass absolute top-24 left-4 right-4 z-50 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-3xl p-4 lg:hidden"
           >
             <ul className="flex flex-col gap-1">
               {NAV_LINKS.map((l) => (
@@ -188,15 +235,21 @@ export function Navbar() {
                   </a>
                 </li>
               ))}
+              <li className="px-4 py-3">
+                <PhoneLink className="items-start" />
+              </li>
               <li>
-                <a
-                  href="#kontakt"
-                  onClick={() => setOpen(false)}
-                  className="mt-2 flex items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-r from-[oklch(0.75_0.22_295)] to-[oklch(0.6_0.24_265)] px-4 py-3.5 text-sm font-semibold text-black"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    openQuote();
+                  }}
+                  className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-r from-[oklch(0.75_0.22_295)] to-[oklch(0.6_0.24_265)] px-4 py-3.5 text-sm font-semibold text-black"
                 >
-                  Umów analizę
+                  Wyceń projekt
                   <ArrowRight className="h-4 w-4" />
-                </a>
+                </button>
               </li>
             </ul>
           </div>

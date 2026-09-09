@@ -14,9 +14,9 @@ export function FAQ() {
       <div className="mx-auto max-w-4xl px-6">
         <Reveal>
           <SectionLabel>FAQ</SectionLabel>
-          <h2 className="mt-4 font-display text-4xl leading-[1.02] tracking-tight md:text-6xl">
+          <h2 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
             <span className="text-gradient">Pytania,</span>{" "}
-            <span className="italic text-gradient-brand">które padają najczęściej.</span>
+            <span className="text-gradient-brand">które padają najczęściej.</span>
           </h2>
         </Reveal>
 

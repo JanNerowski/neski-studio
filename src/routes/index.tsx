@@ -3,17 +3,17 @@ import { useEffect } from "react";
 
 import { AmbientBackground } from "@/components/landing/AmbientBackground";
 import { Contact } from "@/components/landing/Contact";
-import { Ecosystem } from "@/components/landing/Ecosystem";
 import { FAQ } from "@/components/landing/FAQ";
-import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
+import { ForWhom } from "@/components/landing/ForWhom";
 import { Hero } from "@/components/landing/Hero";
-import { Marketing } from "@/components/landing/Marketing";
 import { Navbar } from "@/components/landing/Navbar";
+import { Offer } from "@/components/landing/Offer";
 import { Portfolio } from "@/components/landing/Portfolio";
 import { Process } from "@/components/landing/Process";
-import { ValueProposition } from "@/components/landing/ValueProposition";
-import { WhyBusiness } from "@/components/landing/WhyBusiness";
+import { QuoteProvider } from "@/components/landing/QuoteDialog";
+import { Scope } from "@/components/landing/Scope";
+import { WhyNeski } from "@/components/landing/WhyNeski";
 import { getAbsoluteUrl, siteConfig } from "@/config/site";
 import { FAQS } from "@/data/faq";
 
@@ -179,20 +179,21 @@ function Home() {
         Przejdź do treści
       </a>
       <AmbientBackground />
-      <Navbar />
-      <main id="main-content" className="relative">
-        <Hero />
-        <ValueProposition />
-        <WhyBusiness />
-        <Ecosystem />
-        <Portfolio />
-        <Process />
-        <Marketing />
-        <FAQ />
-        <FinalCTA />
-        <Contact />
-      </main>
-      <Footer />
+      <QuoteProvider>
+        <Navbar />
+        <main id="main-content" className="relative">
+          <Hero />
+          <Offer />
+          <Scope />
+          <WhyNeski />
+          <ForWhom />
+          <Portfolio />
+          <Process />
+          <FAQ />
+          <Contact />
+        </main>
+        <Footer />
+      </QuoteProvider>
     </div>
   );
 }

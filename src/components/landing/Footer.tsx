@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
 
 import { LogoMark } from "@/components/landing/Navbar";
-import { siteConfig } from "@/config/site";
+import { getTelHref, siteConfig } from "@/config/site";
 
 const NAV = [
-  { href: "/#ekosystem", label: "Ekosystem" },
-  { href: "/#realizacje", label: "Realizacje" },
+  { href: "/#oferta", label: "Oferta" },
+  { href: "/#dla-kogo", label: "Dla kogo" },
+  { href: "/#portfolio", label: "Portfolio" },
   { href: "/#proces", label: "Proces" },
   { href: "/#faq", label: "FAQ" },
   { href: "/#kontakt", label: "Kontakt" },
@@ -13,15 +14,13 @@ const NAV = [
 
 const SERVICES = [
   "Strony internetowe",
-  "Google Ads",
-  "Meta Ads",
-  "Analityka",
-  "Optymalizacja",
+  "Widoczność i reklamy",
+  "Wizytówka Google",
+  "Hosting i poczta",
+  "Opieka po starcie",
 ] as const;
 
 export function Footer() {
-  const phone = siteConfig.contact.phone.trim();
-
   return (
     <footer className="relative border-t border-white/5 px-6 py-14">
       <div className="mx-auto max-w-7xl">
@@ -29,11 +28,10 @@ export function Footer() {
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-3">
               <LogoMark />
-              <span className="font-display text-xl text-gradient-brand">NESKI Studio</span>
+              <span className="font-display text-xl font-semibold text-gradient-brand">NESKI Studio</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Nowoczesne strony internetowe i systemy marketingowe dla firm, które chcą
-              zdobywać wartościowych klientów online.
+              Strony internetowe, widoczność w Google i reklamy dla firm. Hosting, poczta i opieka po starcie.
             </p>
           </div>
 
@@ -54,7 +52,7 @@ export function Footer() {
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              Usługi
+              Zakres
             </h3>
             <ul className="mt-4 space-y-2 text-sm text-foreground/80">
               {SERVICES.map((s) => (
@@ -76,16 +74,14 @@ export function Footer() {
                   {siteConfig.contact.email}
                 </a>
               </li>
-              {phone ? (
-                <li>
-                  <a
-                    href={`tel:${phone.replace(/\s/g, "")}`}
-                    className="text-foreground/80 transition-colors hover:text-foreground"
-                  >
-                    {phone}
-                  </a>
-                </li>
-              ) : null}
+              <li>
+                <a
+                  href={getTelHref()}
+                  className="text-foreground/80 transition-colors hover:text-foreground"
+                >
+                  {siteConfig.contact.phone}
+                </a>
+              </li>
             </ul>
           </div>
         </div>

@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 
-import { siteConfig } from "@/config/site";
+import { getTelHref, siteConfig } from "@/config/site";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap",
       },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
@@ -99,6 +99,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           name: siteConfig.name,
           url: siteConfig.url,
           description: siteConfig.description,
+          email: siteConfig.contact.email,
+          telephone: getTelHref().replace("tel:", ""),
         }),
       },
       {
