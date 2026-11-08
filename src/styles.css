@@ -265,6 +265,14 @@ section[id] {
   68% { opacity: 1; }
   100% { opacity: 0; }
 }
+@keyframes scroll-cue {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(7px); }
+}
+@keyframes scroll-dot {
+  0%, 100% { opacity: 0.45; box-shadow: 0 0 0 0 oklch(0.72 0.2 290 / 0.4); }
+  50% { opacity: 1; box-shadow: 0 0 0 5px oklch(0.72 0.2 290 / 0); }
+}
 
 @utility animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
 @utility animate-float-slower { animation: float-slower 11s ease-in-out infinite; }
@@ -318,7 +326,13 @@ section[id] {
   animation: offer-num-pulse 2.4s ease-in-out infinite;
 }
 @utility animate-headline-dot {
-  animation: headline-dot 2s linear infinite;
+  animation: headline-dot 1.5s linear infinite;
+}
+@utility animate-scroll-cue {
+  animation: scroll-cue 2.6s ease-in-out infinite;
+}
+@utility animate-scroll-dot {
+  animation: scroll-dot 2s ease-in-out infinite;
 }
 @utility text-shine {
   background-image: linear-gradient(
@@ -388,5 +402,10 @@ section[id] {
   .animate-headline-dot {
     animation: none !important;
     opacity: 1 !important;
+  }
+
+  .animate-scroll-cue,
+  .animate-scroll-dot {
+    animation: none !important;
   }
 }

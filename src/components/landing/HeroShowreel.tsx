@@ -118,7 +118,7 @@ export function HeroShowreel({ children }: { children: ReactNode }) {
         <div className="absolute inset-x-0 bottom-0 z-[2] h-[42%] bg-gradient-to-t from-[oklch(0.07_0.02_275/_0.72)] via-[oklch(0.07_0.02_275/_0.28)] to-transparent lg:h-[28%]" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center px-6 pb-12 pt-28 md:pt-32 lg:justify-center lg:pb-16">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col items-center px-6 pb-28 pt-28 md:pt-32 lg:justify-center lg:pb-28">
         <div className="flex flex-col items-center text-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[oklch(0.28_0.08_285)] to-[oklch(0.14_0.04_275)] ring-1 ring-white/15 shadow-[0_20px_50px_-16px_oklch(0.55_0.28_295/_0.7)] sm:h-20 sm:w-20 lg:h-24 lg:w-24">
             <img src={logo} alt="" className="h-10 w-10 object-contain sm:h-12 sm:w-12 lg:h-14 lg:w-14" />
