@@ -1,5 +1,5 @@
 import { useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
-import { Globe, Megaphone, ShieldCheck, type LucideIcon } from "lucide-react";
+import { ChevronDown, ChevronUp, Globe, Megaphone, ShieldCheck, type LucideIcon } from "lucide-react";
 
 import { Reveal } from "@/components/landing/Reveal";
 import { SectionLabel } from "@/components/landing/SectionLabel";
@@ -55,6 +55,10 @@ export function Offer() {
     if (glow) glow.style.opacity = "0";
   };
 
+  const step = (direction: 1 | -1) => {
+    setActive((current) => (current + direction + ITEMS.length) % ITEMS.length);
+  };
+
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const forward = event.key === "ArrowDown" || event.key === "ArrowRight";
     const back = event.key === "ArrowUp" || event.key === "ArrowLeft";
@@ -68,7 +72,7 @@ export function Offer() {
   return (
     <section id="oferta" className="relative py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
+        <Reveal from="left">
           <SectionLabel>Oferta</SectionLabel>
           <h2 className="mt-4 max-w-4xl font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
             <span className="text-gradient">Wszystko, czego potrzebuje Twoja firma,</span>{" "}
@@ -80,8 +84,9 @@ export function Offer() {
           </p>
         </Reveal>
 
-        <Reveal className="mt-12 md:mt-16" delay={80}>
-          <div className="grid items-start gap-6 lg:grid-cols-[minmax(280px,0.82fr)_minmax(0,1.28fr)] lg:gap-10">
+        <div className="mt-12 grid items-start gap-6 md:mt-16 lg:grid-cols-[minmax(280px,0.82fr)_minmax(0,1.28fr)] lg:gap-10">
+          <Reveal from="left" delay={80}>
+            <div>
             <div
               role="tablist"
               aria-label="Filary oferty"
@@ -166,7 +171,28 @@ export function Offer() {
                 );
               })}
             </div>
+              <div className="mt-4 flex items-center justify-center gap-2">
+                <button
+                  type="button"
+                  aria-label="Poprzedni punkt oferty"
+                  onClick={() => step(-1)}
+                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 backdrop-blur-md transition-all duration-300 hover:border-[oklch(0.72_0.18_290/0.55)] hover:text-white hover:shadow-[0_0_22px_oklch(0.62_0.22_290/0.35)]"
+                >
+                  <ChevronUp className="h-5 w-5" strokeWidth={1.75} />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Następny punkt oferty"
+                  onClick={() => step(1)}
+                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 backdrop-blur-md transition-all duration-300 hover:border-[oklch(0.72_0.18_290/0.55)] hover:text-white hover:shadow-[0_0_22px_oklch(0.62_0.22_290/0.35)]"
+                >
+                  <ChevronDown className="h-5 w-5" strokeWidth={1.75} />
+                </button>
+              </div>
+            </div>
+          </Reveal>
 
+          <Reveal from="right" delay={140}>
             <div
               className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.045] p-5 shadow-[inset_0_1px_0_oklch(1_0_0/0.1),0_30px_80px_-36px_oklch(0.45_0.22_290/0.55)] backdrop-blur-2xl md:p-8 lg:p-10"
             >
@@ -201,8 +227,8 @@ export function Offer() {
                 </div>
               </div>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

@@ -7,7 +7,7 @@ export function Contact() {
   return (
     <section id="kontakt" className="relative px-6 pb-20 md:pb-28">
       <div className="mx-auto max-w-7xl">
-        <Reveal>
+        <Reveal from="left">
           <SectionLabel>Kontakt</SectionLabel>
           <h2 className="mt-4 max-w-2xl font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-5xl">
             <span className="text-gradient">Napisz albo zadzwoń.</span>{" "}
@@ -32,7 +32,7 @@ export function Contact() {
           </p>
         </Reveal>
 
-        <Reveal className="mt-10" delay={80}>
+        <Reveal from="right" className="mt-10" delay={100}>
           <ContactForm idPrefix="contact" />
         </Reveal>
       </div>

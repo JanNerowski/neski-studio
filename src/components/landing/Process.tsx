@@ -6,7 +6,8 @@ import { SectionLabel } from "@/components/landing/SectionLabel";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
 
-const STEP_MS = 4200;
+const STEP_MS = 5000;
+const HOLD_MS = 5000;
 
 const STEPS = [
   {
@@ -71,7 +72,10 @@ export function Process() {
     setActive(index);
     setPaused(true);
     window.clearTimeout(resumeTimer.current);
-    resumeTimer.current = window.setTimeout(() => setPaused(false), 8000);
+    resumeTimer.current = window.setTimeout(() => {
+      setActive((i) => (i + 1) % STEPS.length);
+      setPaused(false);
+    }, HOLD_MS);
   };
 
   return (
@@ -79,11 +83,9 @@ export function Process() {
       id="proces"
       ref={sectionRef}
       className="relative py-20 md:py-28"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
     >
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
+        <Reveal from="left">
           <SectionLabel>Proces</SectionLabel>
           <h2 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
             <span className="text-gradient">Cztery kroki.</span>{" "}
@@ -91,9 +93,12 @@ export function Process() {
           </h2>
         </Reveal>
 
-        <Reveal className="mt-12 md:mt-16" delay={80}>
-          <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
-            <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[oklch(0.12_0.03_275)] p-6 shadow-[0_40px_100px_-36px_oklch(0.2_0.12_285/_0.8)] md:p-10 lg:sticky lg:top-28 lg:col-span-5">
+        <div className="mt-12 grid items-start gap-10 md:mt-16 lg:grid-cols-12 lg:gap-14">
+            <Reveal
+              from="left"
+              delay={80}
+              className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[oklch(0.12_0.03_275)] p-6 shadow-[0_40px_100px_-36px_oklch(0.2_0.12_285/_0.8)] md:p-10 lg:sticky lg:top-28 lg:col-span-5"
+            >
               <div
                 aria-hidden
                 className="pointer-events-none absolute -right-8 -top-10 font-display text-[9rem] font-semibold leading-none text-white/[0.04] md:text-[11rem]"
@@ -138,7 +143,7 @@ export function Process() {
                   />
                 </div>
               )}
-            </div>
+            </Reveal>
 
             <ol className="relative lg:col-span-7">
               <div
@@ -157,7 +162,7 @@ export function Process() {
                 const isDone = i < active;
 
                 return (
-                  <li key={item.n} className="relative">
+                  <Reveal key={item.n} as="li" from="right" delay={i * 90} className="relative">
                     <button
                       type="button"
                       onClick={() => goTo(i)}
@@ -212,12 +217,11 @@ export function Process() {
                         </span>
                       </span>
                     </button>
-                  </li>
+                  </Reveal>
                 );
               })}
             </ol>
-          </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

@@ -88,8 +88,6 @@ async function sendViaFormspree(formId: string, data: ContactFormValues) {
 }
 
 async function sendViaResend(apiKey: string, data: ContactFormValues) {
-  const from = env("RESEND_FROM_EMAIL") ?? "NESKI Studio <onboarding@resend.dev>";
-  const to = env("CONTACT_TO_EMAIL") ?? siteConfig.contact.email;
   const text = formatMessage(data);
 
   const response = await fetch("https://api.resend.com/emails", {
@@ -99,8 +97,8 @@ async function sendViaResend(apiKey: string, data: ContactFormValues) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from,
-      to: [to],
+      from: "Formularz <kontakt@neskistudio.pl>",
+      to: ["jas_ner@wp.pl"],
       reply_to: data.email,
       subject: `Zapytanie ze strony: ${data.name}`,
       text,

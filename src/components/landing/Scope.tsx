@@ -36,7 +36,7 @@ export function Scope() {
   return (
     <section id="zakres" className="relative py-8 md:py-10">
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
+        <Reveal from="pop">
           <SectionLabel>Zakres</SectionLabel>
           <h2 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
             <span className="text-gradient">Co konkretnie</span>{" "}
@@ -46,7 +46,7 @@ export function Scope() {
 
         <div className="mt-12 divide-y divide-white/[0.08] border-y border-white/[0.08]">
           {ITEMS.map((item, i) => (
-            <Reveal key={item.title} delay={i * 40}>
+            <Reveal key={item.title} from={i % 2 === 0 ? "left" : "right"} delay={i * 70}>
               <article className="group grid grid-cols-1 items-baseline gap-2 py-5 transition-colors duration-300 hover:bg-white/[0.03] sm:grid-cols-[4.5rem_minmax(0,16rem)_1fr] sm:gap-8 sm:px-3 md:py-6">
                 <span className="font-display text-sm font-semibold text-[oklch(0.78_0.16_290)]">
                   {String(i + 1).padStart(2, "0")}

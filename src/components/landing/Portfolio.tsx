@@ -1,5 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 
+import { cn } from "@/lib/utils";
+
 import gabinet from "@/assets/examples/przyklad-gabinet.png";
 import hotel from "@/assets/examples/przyklad-hotel.png";
 import lokal from "@/assets/examples/przyklad-lokal.png";
@@ -37,7 +39,7 @@ export function Portfolio() {
   return (
     <section id="portfolio" className="relative pt-10 pb-20 md:pt-12 md:pb-28">
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
+        <Reveal from="right">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
               <SectionLabel>Portfolio</SectionLabel>
@@ -62,13 +64,15 @@ export function Portfolio() {
 
         <div className="mt-14 flex flex-col gap-16 md:gap-20">
           {EXAMPLES.map((item, i) => (
-            <Reveal key={item.industry} delay={i * 60}>
-              <article
-                className={`grid grid-cols-1 items-center gap-10 lg:grid-cols-12 ${
-                  i % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""
-                }`}
-              >
-                <div className="lg:col-span-7">
+            <article
+              key={item.industry}
+              className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12"
+            >
+                <Reveal
+                  from={i % 2 === 1 ? "right" : "left"}
+                  className={cn("lg:col-span-7", i % 2 === 1 && "lg:order-2")}
+                >
+                <div>
                   <div className="overflow-hidden rounded-[28px] border border-white/[0.08] bg-white/[0.02] shadow-[0_60px_120px_-40px_oklch(0.05_0.05_285/_0.9)]">
                     <img
                       src={item.image}
@@ -77,7 +81,13 @@ export function Portfolio() {
                     />
                   </div>
                 </div>
-                <div className="lg:col-span-5">
+                </Reveal>
+                <Reveal
+                  from={i % 2 === 1 ? "left" : "right"}
+                  delay={120}
+                  className="lg:col-span-5"
+                >
+                <div>
                   <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[oklch(0.8_0.14_290)]">
                     0{i + 1} - {item.industry}
                   </p>
@@ -106,8 +116,8 @@ export function Portfolio() {
                     Chcę podobny kierunek <ArrowUpRight className="h-4 w-4" />
                   </button>
                 </div>
-              </article>
-            </Reveal>
+                </Reveal>
+            </article>
           ))}
         </div>
       </div>

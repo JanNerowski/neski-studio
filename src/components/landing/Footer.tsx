@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
 import { LogoMark } from "@/components/landing/Navbar";
+import { Reveal } from "@/components/landing/Reveal";
 import { getTelHref, siteConfig } from "@/config/site";
 
 const NAV = [
@@ -25,7 +26,7 @@ export function Footer() {
     <footer className="relative border-t border-white/5 px-6 py-14">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-          <div className="lg:col-span-1">
+          <Reveal from="left" className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-3">
               <LogoMark />
               <span className="font-display text-xl font-semibold text-gradient-brand">NESKI Studio</span>
@@ -33,9 +34,9 @@ export function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
               Strony internetowe, widoczność w Google i reklamy dla firm. Hosting, poczta i opieka po starcie.
             </p>
-          </div>
+          </Reveal>
 
-          <div>
+          <Reveal from="up" delay={80}>
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               Nawigacja
             </h3>
@@ -48,9 +49,9 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
 
-          <div>
+          <Reveal from="up" delay={140}>
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               Zakres
             </h3>
@@ -59,9 +60,9 @@ export function Footer() {
                 <li key={s}>{s}</li>
               ))}
             </ul>
-          </div>
+          </Reveal>
 
-          <div>
+          <Reveal from="right" delay={200}>
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               Kontakt
             </h3>
@@ -83,10 +84,10 @@ export function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
+          </Reveal>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-white/5 pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center">
+        <Reveal from="up" delay={80} className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-white/5 pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} NESKI Studio. Wszelkie prawa zastrzeżone.</p>
           <div className="flex flex-wrap gap-4">
             <Link to="/polityka-prywatnosci" className="hover:text-foreground">
@@ -96,7 +97,7 @@ export function Footer() {
               Cookies
             </Link>
           </div>
-        </div>
+        </Reveal>
       </div>
     </footer>
   );
